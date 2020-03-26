@@ -1,7 +1,7 @@
 import React, {useState } from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-//import Welcome from './welcome';
+import Welcome from './welcome';
 
 // installed react-route-dom and axios !!! 
 
@@ -58,7 +58,7 @@ const Registration = (props) => {
             <div className="addtnal_acnt">I already have an account.<Link to = '/login'>Login My Account !</Link></div>
           </div>
         </div>
-        {/* <Welcome /> */}
+        <Welcome />
         </div>
     )
   };

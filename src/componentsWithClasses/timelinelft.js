@@ -170,9 +170,6 @@ export default class Timelinergt extends React.Component {
       <div>
         <meta charSet="utf-8" />
         <title>Home</title>
-        {/* <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
-          <link href="css/bootstrap-responsive.css" rel="stylesheet" type="text/css" /> */}
-
         <div className="content_lft">
           <div className="contnt_1">
             <div className="post_div">
@@ -231,10 +228,6 @@ export default class Timelinergt extends React.Component {
                 ) {
                   return (
                     <div>
-                      {/* <Switch>
-                  <Route path = '/login/timeline/:data._id' component={SinglePost} />
-                </Switch> */}
-
                       <Link to={`/login/timeline/singlepost/${data._id}`}>
                         <div className="contnt_2">
                           <div className="div_a">

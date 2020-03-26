@@ -2,7 +2,7 @@ import React from "react";
 import Timelinelft from "./timelinergt";
 import Timelinergt from "./timelinelft";
 import { Switch, Route, Redirect } from "react-router-dom";
-import Upload from "./postupload";
+import Upload from "./postUpload";
 import Profile from "./profile";
 import Category from "./categoryUpload";
 import SinglePost from "./singlePost";
@@ -50,7 +50,6 @@ export default class Timeline extends React.Component {
           <div>
             <Switch>
               <Route
-                
                 path="/login/timeline/upload"
                 render={props => (
                   <Upload {...props} handleNewPost={this.handleNewPost} />
@@ -69,7 +68,10 @@ export default class Timeline extends React.Component {
               {/* //</Switch><Route path='/login/timeline/' */}
             </Switch>
             <Switch>
-              <Route path="/login/timeline/singlepost/:_id" render={(props) => ( <SinglePost {...props} />)}/>
+              <Route
+                path="/login/timeline/singlepost/:_id"
+                render={props => <SinglePost {...props} />}
+              />
               <Route path="/">
                 <Timelinelft
                   passCat={this.handleCat}

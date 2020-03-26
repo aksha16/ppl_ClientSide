@@ -1,60 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default class Upload extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: localStorage.getItem("email") || "NoEmail",
-      now : new Date(),
-      category:[]
-    };
-  }
+const Upload = (props) => {
+  const [category, setCategory] = useState([]);
+  const email = localStorage.getItem("email");
+  const now = new Date();
 
-  componentDidMount() {
+  useEffect(()=> {
     axios.post('http://localhost:3002/user/login/category').then(res => {
-      this.setState({category:res.data});
-      console.log('category data post upload ones. ', this.state);
+      setCategory(res.data);
+      console.log('category data post upload ones. ', category);
      
     });
 
-  }
+  },[]);
 
-  // handleChange = event => {
-  //   //console.log("image:", event.target.files[0]);
-  //   if (event.target.name === "image") {
-  //     this.setState({ [event.target.name]: event.target.files[0] });
-  //     console.log("ythik;l", event.target.files[0]);
-  //   }else
-  //   this.setState({ [event.target.name]: event.target.value });
-  // };
-
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    console.log("state:", this.state);
+    //console.log("state:", this.state);
     var formData = new FormData(document.getElementById("form123"));
-    formData.append("email", this.state.email);
-    formData.append("date", this.state.now.toDateString());
-    formData.append("time", this.state.now.toLocaleTimeString());
-   // console.log("category;;;;", this.state.category);
-    // console.log("statesssssssssss", formData);
+    formData.append("email", email);
+    formData.append("date", now.toDateString());
+    formData.append("time", now.toLocaleTimeString());
     // this.props.handleNewPost(formData, '1');
     axios
       .post("http://localhost:3002/user/login/upload", formData)
       .then(res => {
         console.log("resUploadData", res.data);
-        this.props.handleNewPost(res.data, '1');
-        this.props.history.push('/login/timeline');
+        props.handleNewPost(res.data, '1');
+        props.history.push('/login/timeline');
       });
      
   };
-
-  render() {
     return (
       <div className="content_lft">
         <div className="register_sec">
           <h1>Upload your Picture</h1>
-          <form onSubmit={this.handleSubmit} id="form123">
+          <form onSubmit={handleSubmit} id="form123">
             <ul>
               <li>
                 <span>Picture</span>
@@ -62,7 +44,6 @@ export default class Upload extends React.Component {
                   type="file"
                   name="image"
                   required
-                  onChange={this.handleChange}
                 />
               </li>
               <li>
@@ -71,7 +52,6 @@ export default class Upload extends React.Component {
                   placeholder="Write your caption here..."
                   name="caption"
                   required
-                  onChange={this.handleChange}
                 />
               </li>
               <li>
@@ -81,9 +61,8 @@ export default class Upload extends React.Component {
                 <select
                   id="category"
                   name="category"
-                  onChange={this.handleChange}
                 >
-                 {this.state.category.map((data, id) => {
+                 {category.map((data, id) => {
                   return (
 
                   
@@ -103,5 +82,7 @@ export default class Upload extends React.Component {
         </div>
       </div>
     );
-  }
-}
+  
+};
+
+export default Upload;

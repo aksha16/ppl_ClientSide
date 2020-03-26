@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Header() {
+export default function Header(props) {
   const localEmail = localStorage.getItem("email");
 
   const handleLogOut = e => {
     //e.preventDefault();
     localStorage.clear();
-    //this.props.history.push('/login');
-    console.log("props history", this.props.history);
+    //props.history.push('/login');
+   // console.log("props history", this.props.history);
   };
 
   return (
