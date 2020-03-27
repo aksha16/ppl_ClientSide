@@ -28,14 +28,14 @@ const Upload = (props) => {
       .then(res => {
         console.log("resUploadData", res.data);
         props.handleNewPost(res.data, '1');
-        props.history.push('/login/timeline');
+        props.handleUploadPost(false);
       });
      
   };
     return (
-      <div className="content_lft">
+      <div className="content">
         <div className="register_sec">
-          <h1>Upload your Picture</h1>
+          {/* <h1>Upload your Picture</h1> */}
           <form onSubmit={handleSubmit} id="form123">
             <ul>
               <li>

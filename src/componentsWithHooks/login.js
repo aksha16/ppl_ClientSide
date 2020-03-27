@@ -19,8 +19,8 @@ const Login = (props) => {
         setCheckLogin(0);
         setInputStyle({});
         
-        localStorage.setItem('email', res.data.email);
-        props.history.push('/login/timeline');
+        localStorage.setItem('email', res.data.email, props.history);
+        props.history.push('/timeline');
       }
       else {
         setCheckLogin(1);

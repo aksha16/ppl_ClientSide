@@ -3,36 +3,42 @@ import { Link } from "react-router-dom";
 //import Timelinergt from './timelinelft'
 import axios from "axios";
 import Timelinelft from "./timelinelft";
-//import Profile from './profile';
+import Profile from './profile';
+import Upload from './postUpload';
+import Category from './categoryUpload';
 
-const Timelinergt = () => {
+const Timelinergt = (props) => {
 
   const [category, setCategory] = useState([]);
   const catsrc = '/categoryPics/';
   const [featuredCat, setFeaturedCat] = useState([]);
+  const [showPostUpload, setShowPostUpload] = useState(false);
+  const [showCategoryUpload, setShowCategoryUpload] = useState(false);
 
 
 
-//   const handleClick = (e) => {
-//     e.preventDefault();
-//     this.props.passCat(e.target.name, "1");
-//     this.setState({'categoryNow' : e.target.name} , () => {
-//       console.log("stateOfcategory >>>>: ", this.state);
-//       })
-//     };
+  const handleClick = (e) => {
+    e.preventDefault();
+    props.handleCategorization(e.target.name, "1");
+    };
   
-//   const handleUploadCategory = (e) => {
-//     e.preventDefault();
-//     console.log("categoryUpload")
-    
-//   }      
-const handleClick = (e) => {
+
+const handleUploadPost = (e) => {
+    setShowPostUpload(e);
+    console.log("lets see what up load post has given to show", e)
+}
+
+const handleUploadCategory = (e) => {
+    setShowCategoryUpload(e);
+    console.log("lets see what's up with category upload ", e);
 
 }
+
+
   useEffect(()=>{
     axios.post('http://localhost:3002/user/login/category').then(res => {
         setCategory(res.data);
-        console.log('category data ', category);
+        console.log('category data ', res.data);
   
         let i = 3;
       const featuredCat = [];
@@ -49,27 +55,19 @@ const handleClick = (e) => {
       });
 
   },[]);
-//   useEffect(()=>{
-//       console.log("lets see this", featuredCat,category)
-//   })
 
+  useEffect( () => {
+    if(props.flag1==="1"){
+        let cat = category;
+        cat.push(props.newCategory);
+        setCategory(cat);
+        console.log("new category came from parent :", props.newCat);
+        props.handleNewCategory([], "");}
 
-//   componentDidUpdate(){
-//     if(this.props.flag1==="1"){
-//     let cat = this.state.category;
-//     cat.push(this.props.newCategory);
-//     this.setState({category:cat});
-//     console.log("new category came from parent :", this.props.newCat);
-//     this.props.handleNewCat([], "");
-//     }
-
-//   }
-
+  })
 
   
     return (
-      // <div className="container">
-      // <div className="content">
       <div>
         <div className="content_rgt">
           <div className="rght_btn">
@@ -80,8 +78,9 @@ const handleClick = (e) => {
             <span className="btn_sep">
               <img src="/images/btn_sep.png" alt="sep" />
             </span>{" "}
-            <Link to="/login/timeline/upload">Upload Post</Link>{" "}
+            <Link onClick={() => handleUploadPost(!showPostUpload)}>Upload Post</Link>{" "}
           </div>
+          {showPostUpload?<Upload handleNewPost={props.handleNewPost} handleUploadPost={handleUploadPost} />:""}
           <div className="rght_btn">
             {" "}
             <span className="rght_btn_icon">
@@ -90,8 +89,9 @@ const handleClick = (e) => {
             <span className="btn_sep">
               <img src="/images/btn_sep.png" alt="sep" />
             </span>{" "}
-            <Link to='/login/timeline/category' >Upload Category</Link>
+            <Link onClick={() => handleUploadCategory(!showCategoryUpload)} >Upload Category</Link>
           </div>
+          {showCategoryUpload?<Category handleNewCategory={props.handleNewCategory} handleUploadCategory={handleUploadCategory} />:""}
           <div className="rght_cate">
             <div className="rght_cate_hd" id="rght_cat_bg">
               Categories

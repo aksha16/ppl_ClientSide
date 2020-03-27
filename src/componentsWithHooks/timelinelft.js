@@ -2,44 +2,41 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
 import { Link, Switch, Route } from "react-router-dom";
 //import SinglePost from "./singlePost";
+import Profile from './profile';
 
  const Timelinelft = (props) => {
 
   const [pics, setPics] = useState([]);
   const picsrc = "/uploadPics/";
   const now = new Date();
-  const category = useState([]);
+  const [category, setCategory] = useState("");
   const noPost = useState(0);
-  const flag = useState(1);
+  const [flag, setFlag] = useState(1);
   const [picsCopy, setPicsCopy] = useState([]);
-  const lp = useState("aaaaaa");
 
+  useEffect(()=> {
+      console.log("Timeleft didmount");
+      return ()=>{
+        console.log("timeline left unmount");
+      }
+  })
 
   const handleCategory = () => {
     axios.post("http://localhost:3002/user/login/post").then(res => {
       console.log("server dataaaaaa: ", res.data);
           setPicsCopy(res.data);
-    //   this.setState({ pics: res.data, picsCopy:res.data });
-    //   this.setState({ category: props.category });
     });
   };
 
-  useLayoutEffect(async () => {
+  useEffect(async () => {
     await axios.post("http://localhost:3002/user/login/post").then(res => {
       console.log("server dataaaaaa: ", res.data);
-    //   this.setState({ pics: res.data, picsCopy:res.data });
-    //   this.setState({ category: props.category });
     setPics(res.data);
     setPicsCopy(res.data);
     console.log("dekhte hai ..",pics);
-
-
     });
   },[]);
 
-//   useLayoutEffect(() => {
-//       console.log("pics are working", pics);
-//   })
 
   useEffect(() => {
     if (props.flag2 === "1") {
@@ -56,140 +53,100 @@ import { Link, Switch, Route } from "react-router-dom";
         );
       }
   
-//       if (this.props.flag === "1") {
-//         this.setState({ category: this.props.category });
-//         console.log("okayyyyyyy");
-//         this.props.passCat("", "");
-//       }
-//       // this.setState({'category':res.data});
-//       console.log("dekhte hai ..", this.state);
-//       console.log("alrighht lets see post props ");
-      
-
+      if (props.flag === "1") {
+        setCategory(props.category);
+        console.log("okayyyyyyy");
+        props.handleCategorization("", "");
+      } 
  })
   
 
-//   const handleLikes = (e, id, email) => {
-//     e.preventDefault();
-//     console.log("hahkamjhak Likes");
-//     //this.setState({'likes':this.state.likes + 1});
-//    // console.log("these are our likes count :", likes);
-//     console.log("id check:", id);
-//     let index = pics.findIndex(x => x._id === id);
-//     //this.setState({likesIndex:index});
-//     //this.setState({[this.state.pics[index].likes] : this.state.pics[index].likes + 1 });
-//     console.log("index:", index, pics[index].likes);
-//     let oldpics = [...pics];
-//     axios
-//       .post("http://localhost:3002/user/login/likes", {
-//         _id: id,
-//         email: localStorage.getItem("email")
-//       })
-//       .then(res => {
-//         if (res.data.nModified === 1) {
-//           console.log("likes added !! ", res);
-//           oldpics[index].likedBy.push("1");
-//           this.setState({ pics: oldpics });
+  const handleLikes = (e, id, email) => {
+    e.preventDefault();
+    console.log("id check:", id);
+    let index = pics.findIndex(x => x._id === id);
+    console.log("index:", index, pics[index].likes);
+    let oldpics = [...pics];
+    axios
+      .post("http://localhost:3002/user/login/likes", {
+        _id: id,
+        email: localStorage.getItem("email")
+      })
+      .then(res => {
+        if (res.data.nModified === 1) {
+          console.log("likes added !! ", res);
+          oldpics[index].likedBy.push("1");
+          setPics(oldpics);
 
-//           console.log("likes changed :", pics[index].likes);
-//         } else {
-//           oldpics[index].likedBy.pop();
-//           this.setState({ pics: oldpics });
-//         }
-//       });
-//   };
+          console.log("likes changed :", pics[index].likes);
+        } else {
+          oldpics[index].likedBy.pop();
+          setPics(oldpics);
+        }
+      });
+  };
 
-//   componentDidUpdate(prevState) {
-//     // axios.post('http://localhost:3002/user/login/showCategory').then(res => {
-//     //   console.log("categories response of category : ", res);
-
-//     if (this.props.flag2 === "1") {
-//       let post = this.state.picsCopy;
-//       post.unshift(this.props.newPost);
-//       this.setState({ pics: post });
-//       this.props.handleNewPost([], "");
-
-//       console.log(
-//         "alllll+++++++++++=======",
-//         this.props.newPost,
-//         this.props.flag2,
-//         post
-//       );
-//     }
-
-//     if (this.props.flag === "1") {
-//       this.setState({ category: this.props.category });
-//       console.log("okayyyyyyy");
-//       this.props.passCat("", "");
-//     }
-//     // this.setState({'category':res.data});
-//     console.log("dekhte hai ..", this.state);
-//     console.log("alrighht lets see post props ");
-//   }
-
-//   const handleOldestFirst = e => {
-//     e.preventDefault();
-//     let oldestfirst = [...this.state.picsCopy.reverse()];
-//     if (this.state.flag === 1) {
-//       this.setState({ pics: oldestfirst, flag: 0, category:'' }, () => {
-//         console.log("oldest first flag inside", flag);
-//       });
-      
-//     }
-//     console.log("oldest first flag", pics);
+  const handleOldestFirst = e => {
+    e.preventDefault();
+    let oldestfirst = [...picsCopy.reverse()];
+    if (flag === 1) {
+        setPics(oldestfirst);
+        setFlag(0);
+        setCategory("");     
+    }
+    console.log("oldest first flag", pics);
    
-//   };
+  };
 
-//   const handleLatestFirst = e => {
-//     e.preventDefault();
-//     let latestfirst = [...picsCopy.reverse()];
-//     if (this.state.flag === 0) {
-//       this.setState({ pics: latestfirst, flag: 1, category:'' }, () => {
-//         console.log("latest first flag inside", this.state.flag);
-//       });
-     
-//     }
-//     console.log("latest first flag", this.state.flag);
-//   };
+  const handleLatestFirst = e => {
+    e.preventDefault();
+    let latestfirst = [...picsCopy.reverse()];
+    if (flag === 0) {
+        setPics(latestfirst);
+        setFlag(1);
+        setCategory("");
+    }
+  };
 
-//   const mostliked = e => {
-//     e.preventDefault();
-//     let mostLiked = [...this.state.picsCopy];
-//     let n = 0;
-//     for (let i = 0; i < mostLiked.length; i++) {
-//       if (mostLiked[i].likedBy.length > n) {
-//         n = mostLiked[i].likedBy.length;
-//       }
-//     }
-//     console.log(" lets see what has came", n);
-//     let mostLikedPic = [];
-//     for (let i = 0; i < mostLiked.length; i++) {
-//       if (mostLiked[i].likedBy.length === n) {
-//         mostLikedPic.push(mostLiked[i]);
-//       }
-//     }
-//     this.setState({ pics: mostLikedPic, category:''});
-//   };
+  const mostliked = e => {
+    e.preventDefault();
+    let mostLiked = [...picsCopy];
+    let n = 0;
+    for (let i = 0; i < mostLiked.length; i++) {
+      if (mostLiked[i].likedBy.length > n) {
+        n = mostLiked[i].likedBy.length;
+      }
+    }
+    let mostLikedPic = [];
+    for (let i = 0; i < mostLiked.length; i++) {
+      if (mostLiked[i].likedBy.length === n) {
+        mostLikedPic.push(mostLiked[i]);
+      }
+    }
+    setPics(mostLikedPic);
+    setCategory("");
+  };
 
-//   const mostCommented = e => {
-//     e.preventDefault();
-//     let mostCommented;
-//     mostCommented = [...this.state.picsCopy]; 
+  const mostCommented = e => {
+    e.preventDefault();
+    let mostCommented;
+    mostCommented = [...picsCopy]; 
     
-//     let n = 0;
-//     for (let i = 0; i < mostCommented.length; i++) {
-//       if (mostCommented[i].comments.length > n) {
-//         n = mostCommented[i].comments.length;
-//       }
-//     }
-//     let mostCommentedArr = [];
-//     for (let i = 0; i < mostCommented.length; i++) {
-//       if (mostCommented[i].comments.length === n) {
-//         mostCommentedArr.push(mostCommented[i]);
-//       }
-//     }
-//     this.setState({ pics: mostCommentedArr, category:'' });
-//   };
+    let n = 0;
+    for (let i = 0; i < mostCommented.length; i++) {
+      if (mostCommented[i].comments.length > n) {
+        n = mostCommented[i].comments.length;
+      }
+    }
+    let mostCommentedArr = [];
+    for (let i = 0; i < mostCommented.length; i++) {
+      if (mostCommented[i].comments.length === n) {
+        mostCommentedArr.push(mostCommented[i]);
+      }
+    }
+    setPics(mostCommentedArr);
+    setCategory("");
+  };
 
   // mostPet = e => {
   //   e.preventDefault();
@@ -209,13 +166,12 @@ import { Link, Switch, Route } from "react-router-dom";
       <div>
         <meta charSet="utf-8" />
         <title>Home</title>
-        {/* <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
-          <link href="css/bootstrap-responsive.css" rel="stylesheet" type="text/css" /> */}
-
+        <Profile />
         <div className="content_lft">
           <div className="contnt_1">
-            {/* <div className="post_div">
-              <div className="post_list">
+              
+            <div className="post_div">
+             <div className="post_list">
                 <ul>
                   <li>
                     <a href="" onClick={handleLatestFirst}>
@@ -240,7 +196,7 @@ import { Link, Switch, Route } from "react-router-dom";
                       </span>
                       Most Pet
                     </a>
-                  </li> 
+                  </li>  */}
                   <li>
                     <a href="" onClick={mostliked}>
                       <span className="list_img">
@@ -255,23 +211,23 @@ import { Link, Switch, Route } from "react-router-dom";
                         <img src="/images/img_5.png" />
                       </span>
                       Most Commented
-                    </a>
+                    </a> 
                   </li>
                 </ul>
-                {/* <div className="post_txt">4 New Post Updates</div>
+                {/* <div className="post_txt">4 New Post Updates</div> */}
               </div>
-            </div> */}
-            {console.log("pics", pics)}
+            </div>
             {pics.map((data, id) => {
               {
 
+                if (
+                    data.category === category ||
+                    category === ""
+                  )
+                    {
                   return (
                     <div>
-                      {/* <Switch>
-                  <Route path = '/login/timeline/:data._id' component={SinglePost} />
-                </Switch> */}
-
-                      <Link to={`/login/timeline/singlepost/${data._id}`}>
+                      <Link to={`/timeline/singlepost/${data._id}`}>
                         <div className="contnt_2">
                           <div className="div_a">
                             <div className="div_title">{data.caption}</div>
@@ -293,7 +249,6 @@ import { Link, Switch, Route } from "react-router-dom";
                                 src={picsrc + data.image}
                                 alt="pet"
                               />
-                              {console.log("this should work", data.image)}
                             </div>
                             <div className="div_btm">
                               <div className="btm_list">
@@ -323,13 +278,13 @@ import { Link, Switch, Route } from "react-router-dom";
                                   <li>
                                     <a
                                       href=""
-                                    //   onClick={e => {
-                                    //     handleLikes(
-                                    //       e,
-                                    //       data._id,
-                                    //       data.email
-                                    //     );
-                                    //   }}
+                                      onClick={e => {
+                                        handleLikes(
+                                          e,
+                                          data._id,
+                                          data.email
+                                        );
+                                      }}
                                     >
                                       <span
                                         className="btn_icon"
@@ -361,7 +316,7 @@ import { Link, Switch, Route } from "react-router-dom";
                       </Link>
                     </div>
                   );
-                  
+                    }
               }
             })}
           </div>

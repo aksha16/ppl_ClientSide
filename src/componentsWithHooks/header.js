@@ -98,21 +98,27 @@ export default function Header(props) {
           {localStorage.getItem("email") ? (
             <div className="navigatn">
               <ul>
-                <li>
-                  <Link to="/login/timeline" className="active">
+                {/* <li>
+                  <Link to="/timeline" className="active">
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link to="/login/timeline/profile"> Profile </Link>
+                  <Link to="/timeline/profile"> Profile </Link>
                 </li>
                 <li>
                   <Link to="/login" onClick={handleLogOut}>
                     log-out{" "}
                   </Link>
-                </li>
+                </li> */}
                 {/* <li><a href="#"> Resuse Market </a></li>
                   <li><a href="#"> Lost and Found</a></li> */}
+                  
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#"> E-Coupons </a></li>
+        <li><a href="#">E-Brands </a></li>
+        <li><a href="#"> Resuse Market </a></li>
+        <li><a href="#"> Lost and Found</a></li>
               </ul>
             </div>
           ) : (
@@ -134,7 +140,10 @@ export default function Header(props) {
               {" "}
               <img src="/images/pic.png" />{" "}
             </div>
-            <div className="info_div1">Me</div>
+            <Link to='/login'>
+            <div className="info_div1" onClick={handleLogOut} >
+              Log-out
+            </div></Link>
           </div>
         </div>
       </div>
