@@ -19,7 +19,8 @@ const Login = (props) => {
         setCheckLogin(0);
         setInputStyle({});
         
-        localStorage.setItem('email', res.data.email, props.history);
+        localStorage.setItem('email', res.data.email);
+        console.log("jah", props.history);
         props.history.push('/timeline');
       }
       else {
@@ -47,7 +48,7 @@ const Login = (props) => {
                   <li><span>Email-ID</span><input type="text" name='email' placeholder="Enter your email" required style ={inputStyle} /></li>
                   <li><span>Password</span><input type="password" name='password' placeholder="Enter your password" required style ={inputStyle} /></li>
                   <li><input type="checkbox" name='rememberMe' />Remember Me</li>
-                  <li><input type="submit" defaultValue="Log In" /><a href>Forgot Password</a></li>
+                  <li><input type="submit" defaultValue="Log In" /><Link to="/forgetpassword">Forgot Password</Link></li>
                   </form>
                 </ul>
                 <div className="addtnal_acnt">I do not have any account yet.<Link to = '/'>Create My Account Now !</Link></div>

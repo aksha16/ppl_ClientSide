@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import Timelinelft from "./timelinelft";
 import Timelinergt from "./timelinergt";
 import { Switch, Route, Redirect } from "react-router-dom";
-import Upload from "./postUpload";
-import Profile from "./profile";
-import Login from "./login";
-// import Category from "./categoryUpload";
 import SinglePost from "../componentsWithClasses/singlePost";
 
 const Timeline = (props) => {

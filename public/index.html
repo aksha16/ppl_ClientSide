@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <script src="/js/jquery.js" type="text/JavaScript"> </script>
+    <script src="/js/bootstrap.js" type="text/JavaScript"> </script>
+    <script src="/js/bootstrap.min.js" type="text/JavaScript"> </script>
     
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -54,6 +56,13 @@
         });
       });
       </script>
+      <script>
+        $(document).ready(function() {
+          $('#clos_pop').click(function() {
+              $('#pop_forgt').toggle("slide");
+          });
+        });
+        </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.

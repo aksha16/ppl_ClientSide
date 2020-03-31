@@ -8,22 +8,37 @@ import Registration from './componentsWithHooks/registration';
 import Welcome from './componentsWithHooks/welcome';
 import Login from './componentsWithHooks/login';
 import Timeline from './componentsWithHooks/timeline';
+import SinglePost from './componentsWithClasses/singlePost';
+import ForgetPassword from './componentsWithHooks/forgotPassword';
+import ResetPassword from './componentsWithHooks/resetPassword';
 
 
 const App = () => {
   return (
     <div>
       <Header />
+      {/* {localStorage.clear()} */}
       <div className="container content">
-      <Switch>
-        <Route exact path = '/' component={Registration} />
-
+      {localStorage.getItem('email') ? 
+      (<Switch>
+        <Route exact path = "/timeline" component={Timeline} />
+        <Route exact path="/timeline/singlepost/:_id" render={(props) => ( <SinglePost {...props} />)}/>
+         <Route exact path = '/' component={Registration} />
         <Route exact path = '/login' component={Login} />
-        {localStorage.getItem('email') ? 
-        <Route path = "/timeline" component={Timeline} /> :
-        <Redirect to = '/login' /> }
+        
+        
+
+      </Switch>) :
+
+      (<Switch>
+
+        <Route exact path = '/' component={Registration} />
+        <Route exact path = '/login' component={Login} />
+        <Route path ='/forgetpassword' component={ForgetPassword} />
+        <Route path = '/resetpassword' component={ResetPassword} />
+
        
-      </Switch>
+      </Switch>)}
      
       
       </div>
@@ -31,7 +46,6 @@ const App = () => {
     </div>
   )
 }
-
 
 
 

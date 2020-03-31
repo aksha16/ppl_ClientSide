@@ -5,6 +5,7 @@ export default class SinglePost extends React.Component {
   constructor(props) {
     super(props);
     this.state = { singlePost: [], picsrc: "/uploadPics/" };
+    console.log("single post is been called or what !!")
   }
   componentDidMount() {
     axios
