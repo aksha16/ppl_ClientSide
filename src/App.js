@@ -11,6 +11,7 @@ import Timeline from './componentsWithHooks/timeline';
 import SinglePost from './componentsWithClasses/singlePost';
 import ForgetPassword from './componentsWithHooks/forgotPassword';
 import ResetPassword from './componentsWithHooks/resetPassword';
+import PageNotFound from './componentsWithHooks/pageNotFound';
 
 
 const App = () => {
@@ -25,21 +26,15 @@ const App = () => {
         <Route exact path="/timeline/singlepost/:_id" render={(props) => ( <SinglePost {...props} />)}/>
          <Route exact path = '/' component={Registration} />
         <Route exact path = '/login' component={Login} />
-        
-        
-
+        <Route exact path = "*" component={PageNotFound} />      
       </Switch>) :
-
       (<Switch>
-
         <Route exact path = '/' component={Registration} />
         <Route exact path = '/login' component={Login} />
-        <Route path ='/forgetpassword' component={ForgetPassword} />
-        <Route path = '/resetpassword' component={ResetPassword} />
-
-       
-      </Switch>)}
-     
+        <Route exact path ='/forgetpassword' component={ForgetPassword} />
+        <Route exact path = '/resetpassword/:_id' component={ResetPassword} />
+        <Route exact path = "*" component={PageNotFound} />       
+      </Switch>)}   
       
       </div>
       <Footer />

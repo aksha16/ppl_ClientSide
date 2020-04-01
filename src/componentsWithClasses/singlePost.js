@@ -45,7 +45,7 @@ export default class SinglePost extends React.Component {
     handleComments = (e) => {
         let oldPost = this.state.singlePost;
         if(this.state.comment != ''){
-        axios.post("http://localhost:3002/user/login/singlePost/addComments", {_id:this.props.match.params._id, comment:this.state.comment}).then(res => {
+        axios.post("http://localhost:3002/user/login/singlePost/addComments", {_id:this.props.match.params._id, comment:this.state.comment, email:localStorage.getItem('email')}).then(res => {
             console.log("comment output has come", res);
             oldPost.comments.push(res.data);
             this.setState({singlePost:oldPost, comment:''});
@@ -56,7 +56,6 @@ export default class SinglePost extends React.Component {
     }
 
   render() {
-    console.log("singlePost+++++++", this.props);
     return (
       <div className="content_lft">
         <div className="contnt_2">
@@ -145,11 +144,11 @@ export default class SinglePost extends React.Component {
                   <li>
                     <div className="list_image">
                       <div className="image_sec"><img src="/images/post_img.png" /></div>
-  <div className="image_name">{localStorage.getItem('email')}</div>
+  <div className="image_name">{data.commentedBy}</div>
                     </div>
 
                     <div className="list_info">
-                      {data}
+                      {data.comment}
                     </div>
                     {/* <input type="button" defaultValue="Reply" className="orng_btn" /> */}
                   </li>
