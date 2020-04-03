@@ -12,6 +12,8 @@ import SinglePost from './componentsWithClasses/singlePost';
 import ForgetPassword from './componentsWithHooks/forgotPassword';
 import ResetPassword from './componentsWithHooks/resetPassword';
 import PageNotFound from './componentsWithHooks/pageNotFound';
+import verifyUser from './componentsWithHooks/verifyUser';
+import VerifyUser from './componentsWithHooks/verifyUser';
 
 
 const App = () => {
@@ -30,6 +32,7 @@ const App = () => {
       </Switch>) :
       (<Switch>
         <Route exact path = '/' component={Registration} />
+        <Route path = '/verifyuser/:_id' component = {VerifyUser} />
         <Route exact path = '/login' component={Login} />
         <Route exact path ='/forgetpassword' component={ForgetPassword} />
         <Route exact path = '/resetpassword/:_id' component={ResetPassword} />

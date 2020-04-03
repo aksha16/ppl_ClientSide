@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
-//import Timelinergt from './timelinelft'
 import axios from "axios";
-import Timelinelft from "./timelinelft";
-import Profile from './profile';
 import Upload from './postUpload';
 import Category from './categoryUpload';
 

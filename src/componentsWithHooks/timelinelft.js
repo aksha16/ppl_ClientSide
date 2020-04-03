@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
 import { Link, Switch, Route } from "react-router-dom";
-//import SinglePost from "./singlePost";
 import Profile from './profile';
 
  const Timelinelft = (props) => {
