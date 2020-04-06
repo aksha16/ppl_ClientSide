@@ -25,7 +25,7 @@ const ResetPassword = (props) => {
             setInputStyle({});
             setPasswordCheck(false);
             const userData = {_id:props.match.params._id, password:newPassword};
-            axios.post('http://localhost:3002/user/resetpassword', userData ).then(res => {
+            axios.post('http://localhost:3002/sign/resetpassword', userData ).then(res => {
                 console.log("backend has been called.", res.data);
                 setPopUp(true);
             })

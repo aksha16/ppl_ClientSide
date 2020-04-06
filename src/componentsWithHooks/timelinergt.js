@@ -33,7 +33,7 @@ const handleUploadCategory = (e) => {
 
 
   useEffect(()=>{
-    axios.post('http://localhost:3002/user/login/category').then(res => {
+    axios.post('http://localhost:3002/categoring/showcategory').then(res => {
         setCategory(res.data);
         console.log('category data ', res.data);
   
@@ -102,12 +102,12 @@ const handleUploadCategory = (e) => {
               <div className="rght_list">
               <ul>
                 <li>
-                  <a href='' name={data.category.toLowerCase()} onClick={handleClick}>
+                  <a href='' name={data.name.toLowerCase()} onClick={handleClick}>
                     <span className="list_icon" >
                       <img src={catsrc + data.image} style={{height:'39px', width:'39px'}} />
                     </span>{" "}
                     
-                    {data.category} 
+                    {data.name} 
                     
                   </a>
                 </li>
@@ -129,7 +129,7 @@ const handleUploadCategory = (e) => {
                 </div>
               <div className="feat_txt"><b>Description: </b>{data.description}</div>
                 <div className="btm_rgt">
-              <div className="btm_arc">{data.category}</div>
+              <div className="btm_arc">{data.name}</div>
                 </div>
               </div>
               </div>

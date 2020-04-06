@@ -9,7 +9,7 @@ export default class SinglePost extends React.Component {
   }
   componentDidMount() {
     axios
-      .post("http://localhost:3002/user/login/singlePost", {
+      .post("http://localhost:3002/posting/singlePost", {
         id: this.props.match.params._id
       })
       .then(res => {
@@ -21,7 +21,7 @@ export default class SinglePost extends React.Component {
   handleLikes = (e) => {
       e.preventDefault();
     let oldpics = this.state.singlePost
-    axios.post('http://localhost:3002/user/login/likes', {_id:this.props.match.params._id, email:localStorage.getItem("email")}).then(res => {
+    axios.post('http://localhost:3002/posting/likes', {_id:this.props.match.params._id, email:localStorage.getItem("email")}).then(res => {
       if(res.data.nModified === 1){
       console.log("likes added !! ", res);
       oldpics.likedBy.push('1');
@@ -45,7 +45,7 @@ export default class SinglePost extends React.Component {
     handleComments = (e) => {
         let oldPost = this.state.singlePost;
         if(this.state.comment != ''){
-        axios.post("http://localhost:3002/user/login/singlePost/addComments", {_id:this.props.match.params._id, comment:this.state.comment, email:localStorage.getItem('email')}).then(res => {
+        axios.post("http://localhost:3002/posting/singlePost/addComments", {_id:this.props.match.params._id, comment:this.state.comment, email:localStorage.getItem('email')}).then(res => {
             console.log("comment output has come", res);
             oldPost.comments.push(res.data);
             this.setState({singlePost:oldPost, comment:''});
@@ -67,11 +67,11 @@ export default class SinglePost extends React.Component {
             <div className="div_top">
               <div className="div_top_lft">
                 <img src="/images/img_6.png" />
-                {this.state.singlePost.email}
+                {this.state.singlePost.postedBy}
               </div>
               <div className="div_top_rgt">
-                <span className="span_date">{this.state.singlePost.date}</span>
-                <span className="span_time">{this.state.singlePost.time}</span>
+                <span className="span_date">{this.state.singlePost.date?this.state.singlePost.date.slice(0,10):''}</span>
+                <span className="span_time">{this.state.singlePost.date?this.state.singlePost.date.slice(14,19):''}</span>
               </div>
             </div>
             <div className="div_image">

@@ -12,7 +12,7 @@ const Login = (props) => {
     e.preventDefault();
     const formData = new FormData(document.getElementById("form123"));
     console.log("working !!");
-    Axios.post('http://localhost:3002/user/login', formData).then((res) => {
+    Axios.post('http://localhost:3002/sign/login', formData).then((res) => {
       console.log("res:", res);
       if(res.data.status){
         console.log("user can log-in!!");

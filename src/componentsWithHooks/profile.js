@@ -6,7 +6,7 @@ const Profile = () => {
   const [profile, setProfile] = useState([]);
 
     useEffect(async ()=> {
-        await axios.post('http://localhost:3002/user/login/profile', {email:localStorage.getItem('email')}).then(res => {
+        await axios.post('http://localhost:3002/posting/profile', {email:localStorage.getItem('email')}).then(res => {
             console.log("resProfile", res.data);
             setProfile(res.data[0]);
             console.log("profile has came", profile);

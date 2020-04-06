@@ -7,7 +7,7 @@ const Upload = (props) => {
   const now = new Date();
 
   useEffect(()=> {
-    axios.post('http://localhost:3002/user/login/category').then(res => {
+    axios.post('http://localhost:3002/categoring/showcategory').then(res => {
       setCategory(res.data);
       console.log('category data post upload ones. ', category);
      
@@ -19,12 +19,12 @@ const Upload = (props) => {
     event.preventDefault();
     //console.log("state:", this.state);
     var formData = new FormData(document.getElementById("form123"));
-    formData.append("email", email);
-    formData.append("date", now.toDateString());
-    formData.append("time", now.toLocaleTimeString());
+    formData.append("postedBy", email);
+    // formData.append("date", now.toDateString());
+    // formData.append("time", now.toLocaleTimeString());
     // this.props.handleNewPost(formData, '1');
     axios
-      .post("http://localhost:3002/user/login/upload", formData)
+      .post("http://localhost:3002/posting/upload", formData)
       .then(res => {
         console.log("resUploadData", res.data);
         props.handleNewPost(res.data, '1');
@@ -67,7 +67,7 @@ const Upload = (props) => {
 
                   
                   <option>
-                    {data.category.toUpperCase()}
+                    {data.name.toUpperCase()}
                   </option>
                   
                   )

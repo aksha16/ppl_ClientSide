@@ -18,17 +18,10 @@ import Profile from './profile';
       return ()=>{
         console.log("timeline left unmount");
       }
-  })
-
-  const handleCategory = () => {
-    axios.post("http://localhost:3002/user/login/post").then(res => {
-      console.log("server dataaaaaa: ", res.data);
-          setPicsCopy(res.data);
-    });
-  };
+  });
 
   useEffect(async () => {
-    await axios.post("http://localhost:3002/user/login/post").then(res => {
+    await axios.post("http://localhost:3002/posting/showpost").then(res => {
       console.log("server dataaaaaa: ", res.data);
     setPics(res.data);
     setPicsCopy(res.data);
@@ -67,7 +60,7 @@ import Profile from './profile';
     console.log("index:", index, pics[index].likes);
     let oldpics = [...pics];
     axios
-      .post("http://localhost:3002/user/login/likes", {
+      .post("http://localhost:3002/posting/likes", {
         _id: id,
         email: localStorage.getItem("email")
       })
@@ -216,6 +209,7 @@ import Profile from './profile';
                 {/* <div className="post_txt">4 New Post Updates</div> */}
               </div>
             </div>
+            {console.log("haahaaaaaaaa+++", pics)}
             {pics.map((data, id) => {
               {
 
@@ -236,11 +230,11 @@ import Profile from './profile';
                             <div className="div_top">
                               <div className="div_top_lft">
                                 <img src="/images/img_6.png" />
-                                {data.email}
+                                {data.postedBy}
                               </div>
                               <div className="div_top_rgt">
-                                <span className="span_date">{data.date}</span>
-                                <span className="span_time">{data.time}</span>
+                                <span className="span_date">{data.date?data.date.slice(0,10):''}</span>
+                                <span className="span_time">{data.date?data.date.slice(14,19):''}</span>
                               </div>
                             </div>
                             <div className="div_image">

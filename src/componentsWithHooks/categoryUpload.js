@@ -10,7 +10,7 @@ const Category = (props) =>  {
     let formdata = new FormData(document.getElementById("form12"));
     console.log("hello form category data");
     axios
-      .post("http://localhost:3002/user/login/categoryUpload", formdata)
+      .post("http://localhost:3002/categoring/categoryUpload", formdata)
       .then(res => {
           console.log("category responnnnnnnse>>>>", res.data)
           if(res.data.status){
@@ -48,7 +48,7 @@ const Category = (props) =>  {
                 <input
                   type="text"
                   placeholder="Name your category"
-                  name="category"
+                  name="name"
                   style={inputStyle}
                   required
                 />
