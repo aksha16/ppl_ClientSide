@@ -22,7 +22,7 @@ const App = () => {
       <Header />
       {/* {localStorage.clear()} */}
       <div className="container content">
-      {localStorage.getItem('email') ? 
+      {localStorage.getItem('token') ? 
       (<Switch>
         <Route exact path = "/timeline" component={Timeline} />
         <Route exact path="/timeline/singlepost/:_id" render={(props) => ( <SinglePost {...props} />)}/>

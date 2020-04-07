@@ -71,7 +71,7 @@ export default class SinglePost extends React.Component {
               </div>
               <div className="div_top_rgt">
                 <span className="span_date">{this.state.singlePost.date?this.state.singlePost.date.slice(0,10):''}</span>
-                <span className="span_time">{this.state.singlePost.date?this.state.singlePost.date.slice(14,19):''}</span>
+                <span className="span_time">{this.state.singlePost.date?this.state.singlePost.date.slice(11,19):''}</span>
               </div>
             </div>
             <div className="div_image">

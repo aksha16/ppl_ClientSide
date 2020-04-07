@@ -234,7 +234,7 @@ import Profile from './profile';
                               </div>
                               <div className="div_top_rgt">
                                 <span className="span_date">{data.date?data.date.slice(0,10):''}</span>
-                                <span className="span_time">{data.date?data.date.slice(14,19):''}</span>
+                                <span className="span_time">{data.date?data.date.slice(11,19):''}</span>
                               </div>
                             </div>
                             <div className="div_image">

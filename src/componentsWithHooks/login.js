@@ -12,24 +12,30 @@ const Login = (props) => {
     e.preventDefault();
     const formData = new FormData(document.getElementById("form123"));
     console.log("working !!");
-    Axios.post('http://localhost:3002/sign/login', formData).then((res) => {
-      console.log("res:", res);
-      if(res.data.status){
-        console.log("user can log-in!!");
-        setCheckLogin(0);
-        setInputStyle({});
-        
-        localStorage.setItem('email', res.data.email);
-        console.log("jah", props.history);
-        props.history.push('/timeline');
-      }
-      else {
-        setCheckLogin(1);
-        setInputStyle({border:'3px solid red'});
-        // console.log("user can't log-in..", this.state.msg);
+    Axios.post('http://localhost:3002/sign/jwt', formData).then(res => {
+      console.log("letss", res);
+      formData.append('token', res.data.token);
 
-      }
-    })
+      Axios.post('http://localhost:3002/sign/login', formData).then((res) => {
+        console.log("res:", res);
+        if(res.data.status){
+          console.log("user can log-in!!", res.data);
+          setCheckLogin(0);
+          setInputStyle({});
+          
+          localStorage.setItem('email', res.data.email);
+          localStorage.setItem('token', res.data.token);
+          //console.log("jah", props.history);
+          props.history.push('/timeline');
+        }
+        else {
+          setCheckLogin(1);
+          setInputStyle({border:'3px solid red'});
+        }
+      })
+    });
+
+   
     
   }
 
