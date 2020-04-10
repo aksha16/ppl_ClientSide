@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const VerifyUser = (props) => {
     useEffect(() => {
-        axios.post('http://localhost:3002/sign/verifyuser', {_id:props.match.params._id}).then(res => {
+        axios.post('http://localhost:3002/user/verifyuser', {_id:props.match.params._id}).then(res => {
             console.log("user has been verified!!");
         })
 

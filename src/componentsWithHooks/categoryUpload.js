@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Category = (props) =>  {
+  const {handleNewCategory, handleUploadCategory} = props;
   const [msg, setMsg] = useState("");
   const [inputStyle, setInputStyle] = useState({});
 
@@ -22,8 +23,8 @@ const Category = (props) =>  {
               setMsg("");
               setInputStyle({});
         console.log("response came from the backend ...", res.data);
-        props.handleNewCategory(res.data, "1");
-         props.handleUploadCategory(false);
+        handleNewCategory(res.data, "1");
+        handleUploadCategory(false);
           }
       });
   };

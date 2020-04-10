@@ -2,9 +2,12 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
 import { Link, Switch, Route } from "react-router-dom";
 import Profile from './profile';
+import { connect, useDispatch } from "react-redux";
+import { userAction } from '../redux/actions';
 
  const Timelinelft = (props) => {
-
+   // needs changes
+  const {flag2,state} = props;
   const [pics, setPics] = useState([]);
   const picsrc = "/uploadPics/";
   const now = new Date();
@@ -12,6 +15,7 @@ import Profile from './profile';
   const noPost = useState(0);
   const [flag, setFlag] = useState(1);
   const [picsCopy, setPicsCopy] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(()=> {
       console.log("Timeleft didmount");
@@ -20,21 +24,22 @@ import Profile from './profile';
       }
   });
 
-  useEffect(async () => {
-    await axios.post("http://localhost:3002/posting/showpost").then(res => {
+  useEffect(() => {
+    axios.post("http://localhost:3002/posting/showpost").then(res => {
       console.log("server dataaaaaa: ", res.data);
     setPics(res.data);
     setPicsCopy(res.data);
     console.log("dekhte hai ..",pics);
     });
+    console.log("timelinelft lets see your props", state);
   },[]);
 
 
   useEffect(() => {
     if (props.flag2 === "1") {
         let post = picsCopy;
-        post.unshift(props.newPost);
-        setPics(post);
+        //post.unshift(props.newPost);
+        setPics([props.newPost, ...pics]);
         props.handleNewPost([], "");
   
         console.log(
@@ -62,7 +67,7 @@ import Profile from './profile';
     axios
       .post("http://localhost:3002/posting/likes", {
         _id: id,
-        email: localStorage.getItem("email")
+        email: state.userData.email
       })
       .then(res => {
         if (res.data.nModified === 1) {
@@ -318,4 +323,8 @@ import Profile from './profile';
     );
 };
 
-export default Timelinelft;
+const mapStateToProps = state => {
+  return {state:state.userData};
+}
+
+export default connect(mapStateToProps)(Timelinelft);

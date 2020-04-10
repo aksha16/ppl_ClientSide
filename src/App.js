@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-
 import {Route, Switch, Redirect} from 'react-router-dom';
+import { useSelector, useDispatch, connect } from 'react-redux';
+import axios from 'axios';
+import {userAction} from './redux/actions';
+
 import Header from './componentsWithHooks/header'
 import Footer from './componentsWithHooks/footer';
 import Registration from './componentsWithHooks/registration';
@@ -16,18 +19,42 @@ import verifyUser from './componentsWithHooks/verifyUser';
 import VerifyUser from './componentsWithHooks/verifyUser';
 
 
-const App = () => {
+const App = (props) => {
+  const {userData} = props;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
+  
+  // const userData = useSelector(state => {
+  //   console.log("userData", state);
+  //   return state
+  //    });
+  // console.log("useSelector", props, userData);
+
+  useEffect(() => {
+    if(localStorage.getItem('token')){
+    axios.post('http://localhost:3002/user/jwtverify', {token:localStorage.getItem('token')}).then(res => {
+      console.log("jwtVerified kya", res);
+      if(res.data.payload){
+          //setIsLoggedIn(true);
+          dispatch(userAction(res.data.payload));
+      } 
+    });}
+
+  }, []);
+
+
+
   return (
     <div>
       <Header />
-      {/* {localStorage.clear()} */}
       <div className="container content">
-      {localStorage.getItem('token') ? 
+      {userData ? 
       (<Switch>
         <Route exact path = "/timeline" component={Timeline} />
         <Route exact path="/timeline/singlepost/:_id" render={(props) => ( <SinglePost {...props} />)}/>
          <Route exact path = '/' component={Registration} />
         <Route exact path = '/login' component={Login} />
+        <Redirect from = '(/|/login)' to ='/timeline' />
         <Route exact path = "*" component={PageNotFound} />      
       </Switch>) :
       (<Switch>
@@ -45,9 +72,11 @@ const App = () => {
   )
 }
 
+const mapStateToProps = state => {
+  return {userData:state.userData} ;
+}
 
 
 
 
-
-export default App;
+export default connect(mapStateToProps)(App);

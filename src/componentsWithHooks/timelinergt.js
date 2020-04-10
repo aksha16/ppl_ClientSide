@@ -5,7 +5,7 @@ import Upload from './postUpload';
 import Category from './categoryUpload';
 
 const Timelinergt = (props) => {
-
+  const {} = props;
   const [category, setCategory] = useState([]);
   const catsrc = '/categoryPics/';
   const [featuredCat, setFeaturedCat] = useState([]);

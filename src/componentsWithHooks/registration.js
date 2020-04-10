@@ -18,7 +18,7 @@ const Registration = (props) => {
     e.preventDefault();
     const formData = new FormData(document.getElementById("form123"));
 
-    axios.post('http://localhost:3002/sign/registration', formData).then((res) => {
+    axios.post('http://localhost:3002/user/registration', formData).then((res) => {
       console.log("Server Response : ", res);
       console.log("props : ",props);
       if(res.data){

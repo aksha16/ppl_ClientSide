@@ -10,7 +10,7 @@ const ForgetPassword = (props) => {
         console.log("is this been callled ddddddd");
         setPopup(true);
         const formData = new FormData(document.getElementById("form12"));
-        axios.post("http://localhost:3002/sign/forgetpassword", formData).then(res => {
+        axios.post("http://localhost:3002/user/forgetpassword", formData).then(res => {
             console.log("hohoho");
             if(res.data.status) {
                 console.log("hahahahahahahhahahah", res.data);

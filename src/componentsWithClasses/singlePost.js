@@ -1,11 +1,12 @@
 import React from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 
-export default class SinglePost extends React.Component {
+class SinglePost extends React.Component {
   constructor(props) {
     super(props);
     this.state = { singlePost: [], picsrc: "/uploadPics/" };
-    console.log("single post is been called or what !!")
+    console.log("single post is been called or what !!", this.props);
   }
   componentDidMount() {
     axios
@@ -18,42 +19,53 @@ export default class SinglePost extends React.Component {
       });
   }
 
-  handleLikes = (e) => {
-      e.preventDefault();
-    let oldpics = this.state.singlePost
-    axios.post('http://localhost:3002/posting/likes', {_id:this.props.match.params._id, email:localStorage.getItem("email")}).then(res => {
-      if(res.data.nModified === 1){
-      console.log("likes added !! ", res);
-      oldpics.likedBy.push('1');
-     this.setState({pics:oldpics});
-    
-      console.log("likes changed :", this.state.pics.likes)
-      }else {oldpics.likedBy.pop();
-        this.setState({pics:oldpics});}
-
+  handleLikes = e => {
+    e.preventDefault();
+    let oldpics = this.state.singlePost;
+    axios
+      .post("http://localhost:3002/posting/likes", {
+        _id: this.props.match.params._id,
+        email: this.props.state.userData.email
       })
-    };
+      .then(res => {
+        if (res.data.nModified === 1) {
+          console.log("likes added !! ", res);
+          oldpics.likedBy.push("1");
+          this.setState({ pics: oldpics });
 
-    handleChange = (e) => {
-        e.preventDefault()
-        this.setState({[e.target.name]:e.target.value}, () => {
-            console.log("single post comment", this.state.comment);
+          console.log("likes changed :", this.state.pics.likes);
+        } else {
+          oldpics.likedBy.pop();
+          this.setState({ pics: oldpics });
+        }
+      });
+  };
+
+  handleChange = e => {
+    e.preventDefault();
+    this.setState({ [e.target.name]: e.target.value }, () => {
+      console.log("single post comment", this.state.comment);
+    });
+  };
+
+  handleComments = e => {
+    let oldPost = this.state.singlePost;
+    if (this.state.comment != "") {
+      axios
+        .post("http://localhost:3002/posting/singlePost/addComments", {
+          _id: this.props.match.params._id,
+          comment: this.state.comment,
+          email: this.props.state.userData.firstname + " " +this.props.state.userData.lastname
+        })
+        .then(res => {
+          console.log("comment output has come", res);
+          oldPost.comments.push(res.data);
+          this.setState({ singlePost: oldPost, comment: "" });
+          console.log("oldpost which is updated now", this.state.singlePost);
+          document.getElementById("comment").value = "";
         });
-       
     }
-
-    handleComments = (e) => {
-        let oldPost = this.state.singlePost;
-        if(this.state.comment != ''){
-        axios.post("http://localhost:3002/posting/singlePost/addComments", {_id:this.props.match.params._id, comment:this.state.comment, email:localStorage.getItem('email')}).then(res => {
-            console.log("comment output has come", res);
-            oldPost.comments.push(res.data);
-            this.setState({singlePost:oldPost, comment:''});
-            console.log("oldpost which is updated now", this.state.singlePost);
-            document.getElementById('comment').value = '';
-
-        }) }
-    }
+  };
 
   render() {
     return (
@@ -70,8 +82,16 @@ export default class SinglePost extends React.Component {
                 {this.state.singlePost.postedBy}
               </div>
               <div className="div_top_rgt">
-                <span className="span_date">{this.state.singlePost.date?this.state.singlePost.date.slice(0,10):''}</span>
-                <span className="span_time">{this.state.singlePost.date?this.state.singlePost.date.slice(11,19):''}</span>
+                <span className="span_date">
+                  {this.state.singlePost.date
+                    ? this.state.singlePost.date.slice(0, 10)
+                    : ""}
+                </span>
+                <span className="span_time">
+                  {this.state.singlePost.date
+                    ? this.state.singlePost.date.slice(11, 19)
+                    : ""}
+                </span>
               </div>
             </div>
             <div className="div_image">
@@ -120,53 +140,72 @@ export default class SinglePost extends React.Component {
                     </a>
                   </li>
                   <li>
-                    <a href="" >
+                    <a href="">
                       <span className="btn_icon">
                         <img src="/images/icon_004.png" alt="share" />
                       </span>
                       {this.state.singlePost.comments
                         ? this.state.singlePost.comments.length
                         : 0}
-                         Comments
+                      Comments
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
-            
           </div>
         </div>
-        
-        {this.state.singlePost.comments ? this.state.singlePost.comments.map((data, id) => {
-            return(
-                <div className="contnt_3">
-                <ul>
-                  <li>
-                    <div className="list_image">
-                      <div className="image_sec"><img src="/images/post_img.png" /></div>
-  <div className="image_name">{data.commentedBy}</div>
-                    </div>
 
-                    <div className="list_info">
-                      {data.comment}
-                    </div>
-                    {/* <input type="button" defaultValue="Reply" className="orng_btn" /> */}
-                  </li>
-                  </ul>
-                  </div>
-            )
-        }) : ""} 
-        <div className="contnt_3">
+        {this.state.singlePost.comments
+          ? this.state.singlePost.comments.map((data, id) => {
+              return (
+                <div className="contnt_3">
                   <ul>
-                  <li>
-                    <div className="cmnt_div1">
-                      <input type="text" id='comment' name="comment" placeholder="Enter your Comment.." className="cmnt_bx1" onChange={this.handleChange} />
-                      <input type="submit" className="sub_bttn1" defaultValue="Submit Comment" onClick={this.handleComments} />
-                    </div>
-                  </li>
-                </ul>
+                    <li>
+                      <div className="list_image">
+                        <div className="image_sec">
+                          <img src="/images/post_img.png" />
+                        </div>
+                        <div className="image_name">{data.commentedBy}</div>
+                      </div>
+
+                      <div className="list_info">{data.comment}</div>
+                      {/* <input type="button" defaultValue="Reply" className="orng_btn" /> */}
+                    </li>
+                  </ul>
                 </div>
+              );
+            })
+          : ""}
+        <div className="contnt_3">
+          <ul>
+            <li>
+              <div className="cmnt_div1">
+                <input
+                  type="text"
+                  id="comment"
+                  name="comment"
+                  placeholder="Enter your Comment.."
+                  className="cmnt_bx1"
+                  onChange={this.handleChange}
+                />
+                <input
+                  type="submit"
+                  className="sub_bttn1"
+                  defaultValue="Submit Comment"
+                  onClick={this.handleComments}
+                />
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return { state: state.userData };
+};
+
+export default connect(mapStateToProps)(SinglePost);

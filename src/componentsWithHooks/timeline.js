@@ -41,9 +41,6 @@ const Timeline = (props) => {
 
         return (
           <div>
-            <Switch>
-              <Route path="/timeline/singlepost/:_id" render={(props) => ( <SinglePost {...props} />)}/>
-              <Route path="/">
               <Timelinergt
               handleNewPost={handleNewPost}
               handleNewCategory={handleNewCategory}
@@ -60,8 +57,6 @@ const Timeline = (props) => {
                 handleCategorization={handleCategorization}
                 />
                 
-              </Route>
-            </Switch>
           </div>
         )
 };

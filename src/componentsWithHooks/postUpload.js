@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 
 const Upload = (props) => {
+  const {state, handleNewPost, handleUploadPost} = props;
   const [category, setCategory] = useState([]);
-  const email = localStorage.getItem("email");
-  const now = new Date();
-
+  const email = state.userData.email;
   useEffect(()=> {
     axios.post('http://localhost:3002/categoring/showcategory').then(res => {
       setCategory(res.data);
@@ -17,22 +17,19 @@ const Upload = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    //console.log("state:", this.state);
     var formData = new FormData(document.getElementById("form123"));
     formData.append("postedBy", email);
-    // formData.append("date", now.toDateString());
-    // formData.append("time", now.toLocaleTimeString());
-    // this.props.handleNewPost(formData, '1');
     axios
       .post("http://localhost:3002/posting/upload", formData)
       .then(res => {
         console.log("resUploadData", res.data);
-        props.handleNewPost(res.data, '1');
-        props.handleUploadPost(false);
+        handleNewPost(res.data, '1');
+        handleUploadPost(false);
       });
      
   };
     return (
+     
       <div className="content">
         <div className="register_sec">
           {/* <h1>Upload your Picture</h1> */}
@@ -85,4 +82,8 @@ const Upload = (props) => {
   
 };
 
-export default Upload;
+const mapStateToProps = state => {
+  return {state:state.userData};
+};
+
+export default connect(mapStateToProps)(Upload);

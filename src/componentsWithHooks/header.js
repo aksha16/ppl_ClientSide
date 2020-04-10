@@ -45,23 +45,23 @@ export default function Header(props) {
                 aria-labelledby="dLabel"
               >
                 <li>
-                  <a tabIndex={-1} href="#">
+                  <a tabIndex={-1}>
                     My Profile
                   </a>
                 </li>
                 <li>
-                  <a tabIndex={-1} href="#">
+                  <a tabIndex={-1}>
                     Message Box
                   </a>
                 </li>
                 <li>
-                  <a tabIndex={-1} href="#">
+                  <a tabIndex={-1}>
                     Change Language
                   </a>
                 </li>
                 <li className="divider" />
                 <li>
-                  <a tabIndex={-1} href="#">
+                  <a tabIndex={-1} >
                     <input type="text" placeholder="search" />
                   </a>
                 </li>
@@ -91,7 +91,7 @@ export default function Header(props) {
       <div className="header">
         <div className="header_lft">
           <div className="logo">
-            <a href="#">
+            <a>
               <img src="/images/logo.png" />
             </a>
           </div>
@@ -114,11 +114,11 @@ export default function Header(props) {
                 {/* <li><a href="#"> Resuse Market </a></li>
                   <li><a href="#"> Lost and Found</a></li> */}
                   
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#"> E-Coupons </a></li>
-        <li><a href="#">E-Brands </a></li>
-        <li><a href="#"> Resuse Market </a></li>
-        <li><a href="#"> Lost and Found</a></li>
+        <li><a href="" className="active">Home</a></li>
+        <li><a href=""> E-Coupons </a></li>
+        <li><a href="">E-Brands </a></li>
+        <li><a href=""> Resuse Market </a></li>
+        <li><a href=""> Lost and Found</a></li>
               </ul>
             </div>
           ) : (
@@ -131,7 +131,7 @@ export default function Header(props) {
           </div>
           <input type="text" placeholder="Search" className="txt_box" />
           <div className="msg_box">
-            <a href="#">
+            <a href="">
               <span className="msg_count">0</span>
             </a>
           </div>
