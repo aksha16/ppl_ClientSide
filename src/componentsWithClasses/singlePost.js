@@ -55,12 +55,12 @@ class SinglePost extends React.Component {
         .post("http://localhost:3002/posting/singlePost/addComments", {
           _id: this.props.match.params._id,
           comment: this.state.comment,
-          email: this.props.state.userData.firstname + " " +this.props.state.userData.lastname
+          commentedBy: this.props.state.userData._id
         })
         .then(res => {
           console.log("comment output has come", res);
           oldPost.comments.push(res.data);
-          this.setState({ singlePost: oldPost, comment: "" });
+          //this.setState({ singlePost: oldPost, comment: "" });
           console.log("oldpost which is updated now", this.state.singlePost);
           document.getElementById("comment").value = "";
         });
@@ -166,7 +166,10 @@ class SinglePost extends React.Component {
                         <div className="image_sec">
                           <img src="/images/post_img.png" />
                         </div>
-                        <div className="image_name">{data.commentedBy}</div>
+                        <div className="image_name">
+                          {data.commentedBy}
+                          {console.log("see++++", data.commentedBy)}
+                        </div>
                       </div>
 
                       <div className="list_info">{data.comment}</div>
