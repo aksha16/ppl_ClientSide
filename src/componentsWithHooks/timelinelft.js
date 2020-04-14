@@ -235,7 +235,7 @@ import { userAction } from '../redux/actions';
                             <div className="div_top">
                               <div className="div_top_lft">
                                 <img src="/images/img_6.png" />
-                                {data.postedBy}
+                                {data.postedBy.firstname}
                               </div>
                               <div className="div_top_rgt">
                                 <span className="span_date">{data.date?data.date.slice(0,10):''}</span>

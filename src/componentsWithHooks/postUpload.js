@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 const Upload = (props) => {
   const {state, handleNewPost, handleUploadPost} = props;
   const [category, setCategory] = useState([]);
-  const email = state.userData.email;
+  const id = state.userData._id;
   useEffect(()=> {
     axios.post('http://localhost:3002/categoring/showcategory').then(res => {
       setCategory(res.data);
@@ -18,7 +18,7 @@ const Upload = (props) => {
   const handleSubmit = event => {
     event.preventDefault();
     var formData = new FormData(document.getElementById("form123"));
-    formData.append("postedBy", email);
+    formData.append("postedBy", id);
     axios
       .post("http://localhost:3002/posting/upload", formData)
       .then(res => {

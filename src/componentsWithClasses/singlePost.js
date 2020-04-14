@@ -6,8 +6,8 @@ class SinglePost extends React.Component {
   constructor(props) {
     super(props);
     this.state = { singlePost: [], picsrc: "/uploadPics/" };
-    console.log("single post is been called or what !!", this.props);
   }
+
   componentDidMount() {
     axios
       .post("http://localhost:3002/posting/singlePost", {
@@ -15,7 +15,7 @@ class SinglePost extends React.Component {
       })
       .then(res => {
         this.setState({ singlePost: res.data });
-        console.log("}}}}}}}}}", this.state);
+        console.log("+++++++++", this.state);
       });
   }
 
@@ -60,7 +60,7 @@ class SinglePost extends React.Component {
         .then(res => {
           console.log("comment output has come", res);
           oldPost.comments.push(res.data);
-          //this.setState({ singlePost: oldPost, comment: "" });
+          this.setState({ singlePost: oldPost, comment: "" });
           console.log("oldpost which is updated now", this.state.singlePost);
           document.getElementById("comment").value = "";
         });
@@ -79,7 +79,11 @@ class SinglePost extends React.Component {
             <div className="div_top">
               <div className="div_top_lft">
                 <img src="/images/img_6.png" />
-                {this.state.singlePost.postedBy}
+                {this.state.singlePost.postedBy
+                  ? this.state.singlePost.postedBy.firstname +
+                    " " +
+                    this.state.singlePost.postedBy.lastname
+                  : ""}
               </div>
               <div className="div_top_rgt">
                 <span className="span_date">
@@ -167,8 +171,9 @@ class SinglePost extends React.Component {
                           <img src="/images/post_img.png" />
                         </div>
                         <div className="image_name">
-                          {data.commentedBy}
-                          {console.log("see++++", data.commentedBy)}
+                          {data.commentedBy.firstname +
+                            " " +
+                            data.commentedBy.lastname}
                         </div>
                       </div>
 
