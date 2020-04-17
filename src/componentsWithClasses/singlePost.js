@@ -10,7 +10,7 @@ class SinglePost extends React.Component {
 
   componentDidMount() {
     axios
-      .post("http://localhost:3002/posting/singlePost", {
+      .post("http://localhost:3002/post/singlePost", {
         id: this.props.match.params._id
       })
       .then(res => {
@@ -23,7 +23,7 @@ class SinglePost extends React.Component {
     e.preventDefault();
     let oldpics = this.state.singlePost;
     axios
-      .post("http://localhost:3002/posting/likes", {
+      .post("http://localhost:3002/post/likes", {
         _id: this.props.match.params._id,
         email: this.props.state.userData.email
       })
@@ -52,7 +52,7 @@ class SinglePost extends React.Component {
     let oldPost = this.state.singlePost;
     if (this.state.comment != "") {
       axios
-        .post("http://localhost:3002/posting/singlePost/addComments", {
+        .post("http://localhost:3002/post/singlePost/addComments", {
           _id: this.props.match.params._id,
           comment: this.state.comment,
           commentedBy: this.props.state.userData._id

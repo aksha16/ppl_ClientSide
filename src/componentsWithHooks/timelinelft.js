@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
 import { Link, Switch, Route } from "react-router-dom";
-import Profile from './profile';
-import { connect, useDispatch } from "react-redux";
-import { userAction } from '../redux/actions';
+import Profile from "./profile";
+import { connect, useSelector } from "react-redux";
+import { userAction } from "../redux/actions";
+import Pagination from './pagination';
 
- const Timelinelft = (props) => {
-   // needs changes
-  const {flag2,state} = props;
+const Timelinelft = props => {
+  // needs changes
+  const { flag2, state } = props;
   const [pics, setPics] = useState([]);
   const picsrc = "/uploadPics/";
   const now = new Date();
@@ -15,48 +16,55 @@ import { userAction } from '../redux/actions';
   const noPost = useState(0);
   const [flag, setFlag] = useState(1);
   const [picsCopy, setPicsCopy] = useState([]);
-  const dispatch = useDispatch();
+  const user = useSelector(state => state.userData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(2);
 
-  useEffect(()=> {
-      console.log("Timeleft didmount");
-      return ()=>{
-        console.log("timeline left unmount");
-      }
+  //get current post 
+  const indexOfLastPage = currentPage * postPerPage;
+  const indexOfFirstPage = indexOfLastPage - postPerPage;
+  const currentPost = pics.slice(indexOfFirstPage, indexOfLastPage);
+
+  const paginate = (pageNumber) => {
+    //pageNumber.preventDefault();
+    setCurrentPage(pageNumber);
+    console.log("cureentpost", currentPost);
+  }
+  useEffect(() => {
+    console.log("Timeleft didmount", user.userData.email, "hahah");
+    return () => {
+      console.log("timeline left unmount");
+    };
   });
 
   useEffect(() => {
-    axios.post("http://localhost:3002/posting/showpost").then(res => {
+    axios.post("http://localhost:3002/post/showpost").then(res => {
       console.log("server dataaaaaa: ", res.data);
-    setPics(res.data);
-    setPicsCopy(res.data);
-    console.log("dekhte hai ..",pics);
+      setPics(res.data);
+      setPicsCopy(res.data);
+      console.log("dekhte hai ..", pics);
     });
     console.log("timelinelft lets see your props", state);
-  },[]);
-
+  }, []);
 
   useEffect(() => {
     if (props.flag2 === "1") {
-        let post = picsCopy;
-        //post.unshift(props.newPost);
-        setPics([props.newPost, ...pics]);
-        props.handleNewPost([], "");
-  
-        console.log(
-          "alllll+++++++++++=======",
-          props.newPost,
-          props.flag2,
-          post
-        );
-      }
-  
-      if (props.flag === "1") {
-        setCategory(props.category);
-        console.log("okayyyyyyy");
-        props.handleCategorization("", "");
-      } 
- })
-  
+      let post = picsCopy;
+      //post.unshift(props.newPost);
+      setPics([props.newPost, ...pics]);
+      props.handleNewPost([], "");
+
+      console.log("alllll+++++++++++=======", props.newPost, props.flag2, post);
+    }
+  });
+
+  useEffect(() => {
+    if (props.flag === "1") {
+      setCategory(props.category);
+      console.log("okayyyyyyy");
+      props.handleCategorization("", "");
+    }
+  });
 
   const handleLikes = (e, id, email) => {
     e.preventDefault();
@@ -65,9 +73,9 @@ import { userAction } from '../redux/actions';
     console.log("index:", index, pics[index].likes);
     let oldpics = [...pics];
     axios
-      .post("http://localhost:3002/posting/likes", {
+      .post("http://localhost:3002/post/likes", {
         _id: id,
-        email: state.userData.email
+        email: user.userData.email
       })
       .then(res => {
         if (res.data.nModified === 1) {
@@ -87,21 +95,20 @@ import { userAction } from '../redux/actions';
     e.preventDefault();
     let oldestfirst = [...picsCopy.reverse()];
     if (flag === 1) {
-        setPics(oldestfirst);
-        setFlag(0);
-        setCategory("");     
+      setPics(oldestfirst);
+      setFlag(0);
+      setCategory("");
     }
     console.log("oldest first flag", pics);
-   
   };
 
   const handleLatestFirst = e => {
     e.preventDefault();
     let latestfirst = [...picsCopy.reverse()];
     if (flag === 0) {
-        setPics(latestfirst);
-        setFlag(1);
-        setCategory("");
+      setPics(latestfirst);
+      setFlag(1);
+      setCategory("");
     }
   };
 
@@ -127,8 +134,8 @@ import { userAction } from '../redux/actions';
   const mostCommented = e => {
     e.preventDefault();
     let mostCommented;
-    mostCommented = [...picsCopy]; 
-    
+    mostCommented = [...picsCopy];
+
     let n = 0;
     for (let i = 0; i < mostCommented.length; i++) {
       if (mostCommented[i].comments.length > n) {
@@ -159,34 +166,33 @@ import { userAction } from '../redux/actions';
 
   // }
 
-    return (
-      <div>
-        <meta charSet="utf-8" />
-        <title>Home</title>
-        <Profile />
-        <div className="content_lft">
-          <div className="contnt_1">
-              
-            <div className="post_div">
-             <div className="post_list">
-                <ul>
-                  <li>
-                    <a href="" onClick={handleLatestFirst}>
-                      <span className="list_img">
-                        <img src="/images/img_1.png" />
-                      </span>
-                      Latest First
-                    </a>
-                  </li>
-                  <li>
-                    <a href="" onClick={handleOldestFirst}>
-                      <span className="list_img">
-                        <img src="/images/img_2.png" />
-                      </span>
-                      Oldest First
-                    </a>
-                  </li>
-                  {/* <li>
+  return (
+    <div>
+      <meta charSet="utf-8" />
+      <title>Home</title>
+      <Profile />
+      <div className="content_lft">
+        <div className="contnt_1">
+          <div className="post_div">
+            <div className="post_list">
+              <ul>
+                <li>
+                  <a href="" onClick={handleLatestFirst}>
+                    <span className="list_img">
+                      <img src="/images/img_1.png" />
+                    </span>
+                    Latest First
+                  </a>
+                </li>
+                <li>
+                  <a href="" onClick={handleOldestFirst}>
+                    <span className="list_img">
+                      <img src="/images/img_2.png" />
+                    </span>
+                    Oldest First
+                  </a>
+                </li>
+                {/* <li>
                     <a href="" onClick={this.mostPet}>
                       <span className="list_img">
                         <img src="/images/img_3.png" />
@@ -194,137 +200,129 @@ import { userAction } from '../redux/actions';
                       Most Pet
                     </a>
                   </li>  */}
-                  <li>
-                    <a href="" onClick={mostliked}>
-                      <span className="list_img">
-                        <img src="/images/img_4.png" />
-                      </span>
-                      Most Liked
-                    </a>
-                  </li>
-                  <li>
-                    <a href="" onClick={mostCommented}>
-                      <span className="list_img">
-                        <img src="/images/img_5.png" />
-                      </span>
-                      Most Commented
-                    </a> 
-                  </li>
-                </ul>
-                {/* <div className="post_txt">4 New Post Updates</div> */}
-              </div>
+                <li>
+                  <a href="" onClick={mostliked}>
+                    <span className="list_img">
+                      <img src="/images/img_4.png" />
+                    </span>
+                    Most Liked
+                  </a>
+                </li>
+                <li>
+                  <a href="" onClick={mostCommented}>
+                    <span className="list_img">
+                      <img src="/images/img_5.png" />
+                    </span>
+                    Most Commented
+                  </a>
+                </li>
+              </ul>
+              {/* <div className="post_txt">4 New Post Updates</div> */}
             </div>
-            {console.log("haahaaaaaaaa+++", pics)}
-            {pics.map((data, id) => {
-              {
-
-                if (
-                    data.category === category ||
-                    category === ""
-                  )
-                    {
-                  return (
-                    <div>
-                      <Link to={`/timeline/singlepost/${data._id}`}>
-                        <div className="contnt_2">
-                          <div className="div_a">
-                            <div className="div_title">{data.caption}</div>
-                            <div className="btm_rgt">
-                              <div className="btm_arc">{data.category}</div>
+          </div>
+          {console.log("haahaaaaaaaa+++", pics)}
+          {currentPost.map((data, id) => {
+            {
+              if (data.category === category || category === "") {
+                return (
+                  <div>
+                    <Link to={`/timeline/singlepost/${data._id}`}>
+                      <div className="contnt_2">
+                        <div className="div_a">
+                          <div className="div_title">{data.caption}</div>
+                          <div className="btm_rgt">
+                            <div className="btm_arc">{data.category}</div>
+                          </div>
+                          <div className="div_top">
+                            <div className="div_top_lft">
+                              <img src="/images/img_6.png" />
+                              {data.postedBy.firstname +
+                                " " +
+                                data.postedBy.lastname}
                             </div>
-                            <div className="div_top">
-                              <div className="div_top_lft">
-                                <img src="/images/img_6.png" />
-                                {data.postedBy.firstname}
-                              </div>
-                              <div className="div_top_rgt">
-                                <span className="span_date">{data.date?data.date.slice(0,10):''}</span>
-                                <span className="span_time">{data.date?data.date.slice(11,19):''}</span>
-                              </div>
+                            <div className="div_top_rgt">
+                              <span className="span_date">
+                                {data.date ? data.date.slice(0, 10) : ""}
+                              </span>
+                              <span className="span_time">
+                                {data.date ? data.date.slice(11, 19) : ""}
+                              </span>
                             </div>
-                            <div className="div_image">
-                              <img
-                                src={picsrc + data.image}
-                                alt="pet"
-                              />
-                            </div>
-                            <div className="div_btm">
-                              <div className="btm_list">
-                                <ul>
-                                  <li>
-                                    <a href="">
-                                      <span className="btn_icon">
-                                        <img
-                                          src="/images/icon_001.png"
-                                          alt="share"
-                                        />
-                                      </span>
-                                      Share
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="">
-                                      <span className="btn_icon">
-                                        <img
-                                          src="/images/icon_002.png"
-                                          alt="share"
-                                        />
-                                      </span>
-                                      Flag
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a
-                                      href=""
-                                      onClick={e => {
-                                        handleLikes(
-                                          e,
-                                          data._id,
-                                          data.email
-                                        );
-                                      }}
-                                    >
-                                      <span
-                                        className="btn_icon"
-                                      >
-                                        <img
-                                          src="/images/icon_003.png"
-                                          alt="share"
-                                        />
-                                      </span>
-                                      {data.likedBy?data.likedBy.length:0} likes
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="#">
-                                      <span className="btn_icon">
-                                        <img
-                                          src="/images/icon_004.png"
-                                          alt="share"
-                                        />
-                                      </span>
-                                      {data.comments?data.comments.length:0} comments
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
+                          </div>
+                          <div className="div_image">
+                            <img src={picsrc + data.image} alt="pet" />
+                          </div>
+                          <div className="div_btm">
+                            <div className="btm_list">
+                              <ul>
+                                <li>
+                                  <a href="">
+                                    <span className="btn_icon">
+                                      <img
+                                        src="/images/icon_001.png"
+                                        alt="share"
+                                      />
+                                    </span>
+                                    Share
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="">
+                                    <span className="btn_icon">
+                                      <img
+                                        src="/images/icon_002.png"
+                                        alt="share"
+                                      />
+                                    </span>
+                                    Flag
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    href=""
+                                    onClick={e => {
+                                      handleLikes(e, data._id, data.email);
+                                    }}
+                                  >
+                                    <span className="btn_icon">
+                                      <img
+                                        src="/images/icon_003.png"
+                                        alt="share"
+                                      />
+                                    </span>
+                                    {data.likedBy ? data.likedBy.length : 0}{" "}
+                                    likes
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">
+                                    <span className="btn_icon">
+                                      <img
+                                        src="/images/icon_004.png"
+                                        alt="share"
+                                      />
+                                    </span>
+                                    {data.comments ? data.comments.length : 0}{" "}
+                                    comments
+                                  </a>
+                                </li>
+                              </ul>
                             </div>
                           </div>
                         </div>
-                      </Link>
-                    </div>
-                  );
-                    }
+                      </div>
+                    </Link>
+                  </div>
+                );
               }
-            })}
-          </div>
+            }
+          })}
         </div>
+        <Pagination postPerPage={postPerPage} totalPost={pics.length} paginate={paginate}/>
       </div>
-    );
+    </div>
+  );
 };
 
-const mapStateToProps = state => {
-  return {state:state.userData};
-}
 
-export default connect(mapStateToProps)(Timelinelft);
+export default Timelinelft;

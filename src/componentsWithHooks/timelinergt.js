@@ -33,7 +33,7 @@ const handleUploadCategory = (e) => {
 
 
   useEffect(()=>{
-    axios.post('http://localhost:3002/categoring/showcategory').then(res => {
+    axios.post('http://localhost:3002/category/showcategory').then(res => {
         setCategory(res.data);
         console.log('category data ', res.data);
   

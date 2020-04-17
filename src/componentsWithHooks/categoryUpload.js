@@ -11,7 +11,7 @@ const Category = (props) =>  {
     let formdata = new FormData(document.getElementById("form12"));
     console.log("hello form category data");
     axios
-      .post("http://localhost:3002/categoring/categoryUpload", formdata)
+      .post("http://localhost:3002/category/categoryUpload", formdata)
       .then(res => {
           console.log("category responnnnnnnse>>>>", res.data)
           if(res.data.status){
