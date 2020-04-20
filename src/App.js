@@ -61,7 +61,7 @@ const App = (props) => {
         <Route exact path = '/' component={Registration} />
         <Route path = '/verifyuser/:_id' component = {VerifyUser} />
         <Route exact path = '/login' component={Login} />
-        <Route exact path ='/forgetpassword' component={ForgetPassword} />
+        <Route path ='/forgetpassword' component={ForgetPassword} />
         <Route exact path = '/resetpassword/:_id' component={ResetPassword} />
         <Route exact path = "*" component={PageNotFound} />       
       </Switch>)}   

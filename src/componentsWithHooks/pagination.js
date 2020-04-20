@@ -8,23 +8,43 @@ const Pagination = props => {
   for (let i = 1; i <= Math.ceil(totalPost / postPerPage); i++) {
     pageNumber.push(i);
   }
+  const changePageNumber = (n) => {
+    setNumber(n);
+  };
+
+  const increamentPageNumber = () => {
+      const n = number;
+      setNumber(n+1);
+      paginate(n+1);
+
+  };
+
+  const decreamentPageNumber = () => {
+      const n = number;
+      setNumber(n -1);
+      paginate(n-1);
+  }
+
+
   return (
-   
-      <div className="pagination">
-        <ul style={{margin:'13px'}}>
-            <li>
-                <Link onClick= {() => paginate(number-1)}>Previous</Link>
-            </li>
-          {pageNumber.map(number => (
-            <li key={number}>
-              <Link onClick={() => paginate(number)}>{number}</Link>
-            </li>
-          ))}
-          <li>
-              <Link onClick ={() => paginate(number+1)}>Next</Link>
+    <div className="pagination">
+        {console.log("number lets seeeee ====", number)}
+      <ul style={{ margin: "13px" }}>
+          {number > 1 ?
+        <li>
+          <Link onClick={() => decreamentPageNumber()}>Previous</Link>
+        </li> : '' }
+        {pageNumber.map(Pagenumber => (
+          <li key={Pagenumber}>
+            <Link onClick={() =>{ paginate(Pagenumber); changePageNumber(Pagenumber)}}>{Pagenumber}</Link>
           </li>
-        </ul>
-      </div>
+        ))}
+        {number< Math.ceil(totalPost / postPerPage) ?
+        <li>
+          <Link onClick={ () => increamentPageNumber()}>Next</Link>
+        </li> : '' }
+      </ul>
+    </div>
   );
 };
 
