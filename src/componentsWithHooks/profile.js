@@ -22,9 +22,13 @@ const Profile = (props) => {
             </div>
             <div className="profile_form">
               <ul>
-                <li>
+                {/* <li>
                   <div className="div_name1">Name :</div>
   <div className="div_name2">{state.userData.firstname} {state.userData.lastname}</div>
+                </li> */}
+                <li>
+                  <div className="div_name1">Name :</div>
+  <div className="div_name2">Aksha Ali</div>
                 </li>
                 <li>
                   <div className="div_name1">Sex :</div>
